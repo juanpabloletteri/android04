@@ -1,5 +1,8 @@
 package com.example.alumno.android04;
 
+import android.app.Notification;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -10,8 +13,16 @@ import java.io.IOException;
 
 public class MiHilo extends Thread {
 
+    private Handler h;
+
+    public MiHilo(Handler h){
+        this.h = h;
+    }
+
     @Override
     public void run(){
+        Message m = new Message();
+
         String datos="";
         Conexion conn = new Conexion("http://www.lslutnfra.com/alumnos/practicas/listaPersonas.xml");
         try {
@@ -19,6 +30,10 @@ public class MiHilo extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("mens", datos );
+        Log.d("mensaje servidor", datos );
+        m.obj = datos;
+        h.sendMessage(m);
+
+
     }
 }
